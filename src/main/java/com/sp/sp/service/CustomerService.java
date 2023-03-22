@@ -9,18 +9,29 @@ import com.sp.sp.repository.CustomerRepository;
 public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
-//	@Autowired
-//	private MailService mailService;
+	@Autowired
+	private MailService mailService;
 	
-//	public Customer save(Customer customer) throws Exception {
-//		customer = customerRepository.save(customer);
-//		mailService.sendMailToVerifyEmailId(customer.getEmail(), "customer");
-//		return customer;
-	
-	
-	public Customer save(Customer customer) {
-		return customerRepository.save(customer);
+	public Customer save(Customer customer) throws Exception {
+		//db service
+		customer = customerRepository.save(customer);
+		//mail service
+		 String activationCode = mailService.sendMailToVerifyEmailId(customer.getEmail(), "customer");
+		customer.setActivationCode(activationCode);
+		customerRepository.save(customer);
+		return customer;
 	}
+	
+	public Customer update(Customer customer) throws Exception {
+		customer = customerRepository.save(customer);
+		
+		return customer;
 	}
+	
+	  public Customer findByEmail(String email) {
+		return customerRepository.findByEmail(email);
+	}
+	
+}
 
 

@@ -20,6 +20,8 @@ public class Customer {
 	private Long mobileNumber;
 	private String email;
 	private String password;
+	private String activationCode;
+	private int status = 0;
 	
 	@OneToMany(mappedBy = "customer")
 	private Set<Booking> bookings = new HashSet<>();

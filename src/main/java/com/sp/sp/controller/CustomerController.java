@@ -21,23 +21,24 @@ public class CustomerController {
 	private CustomerService customerService;
 	
 	@PostMapping
-	public ResponseEntity<Customer> save(@RequestBody Customer customer)
+	public ResponseEntity<Customer> save (@RequestBody Customer customer) throws Exception
 	{
 		return ResponseEntity.ok(customerService.save(customer));
 	}
+	//DTO: Data Transfer Object 
+	@GetMapping("verification/email/{email}/activationCode/{activationCode}")
+	public String emailVerification(@PathVariable String email, @PathVariable String activationCode) throws Exception
+	{
+		String message = "Not verified.";
+	    Customer customer = customerService.findByEmail(email);
+		if(activationCode.equals(customer.getActivationCode()))
+		{
+			message = "<h1>Your email account verified successfully</h1>";
+			customer.setStatus(1);
+			customerService.update(customer);
+		}
 	
-//	@GetMapping("verification/email/{email}/activationCode/{activationCode}")
-//	public String emailVerification(@PathVariable String email, @PathVariable String activationCode) throws Exception
-//	{
-//		String message = "Not verified.";
-//		Customer customer = customerService.findByEmail(email);
-//		if(activationCode.equals(customer.getActivationCode()))
-//		{
-//			message = "<h1>Your email ccount verified successfully</h1>";
-//			customer.setStatus(1);
-//			customerService.update(customer);
-//		}
-//	}
-//	return message;
+	return message;
 
+}
 }
